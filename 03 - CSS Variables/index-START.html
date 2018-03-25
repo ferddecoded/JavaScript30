@@ -9,6 +9,11 @@
 
   <div class="controls">
     <label for="spacing">Spacing:</label>
+    <!-- 
+       -utilizes data attribute
+       -made up attribute that follows 'data'
+       -here we use px
+    -->
     <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
 
     <label for="blur">Blur:</label>
@@ -21,7 +26,26 @@
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
+   /* 
+   declare css variable on root, highest level
+   set default variable
+    */
+   :root {
+      --base: #ffc600;
+      --spacing: 10px;
+      --blur: 10px;
+   }
 
+   img {
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur));
+
+   }
+
+   .hl {
+      color: var(--base);
+   }
     /*
       misc styles, nothing to do with CSS variables
     */
@@ -45,6 +69,23 @@
   </style>
 
   <script>
+     //if you console.log inputs, it returns a node List because of querySelectorAll, not an array although it looks like it
+     const inputs = document.querySelectorAll(".controls input");
+
+     function handleUpdate() {
+        console.log(this)
+        //dataset is an object that will contain all of th data attributes, in this case it is sizing
+        //we link suffix to the data-sizing attribute
+        // we include || "" as "nothing" for the color picker, which doesnt have sizing
+        const suffix = this.dataset.sizing || "";
+        
+        document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+     }
+     
+     //listen for change in input
+     inputs.forEach(input => input.addEventListener("change", handleUpdate));
+     //listen for as you move the mouse when you drag the value
+     inputs.forEach(input => input.addEventListener("mousemove", handleUpdate));
   </script>
 
 </body>
