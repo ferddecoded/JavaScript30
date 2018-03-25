@@ -31,28 +31,135 @@
 
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
+   //  const fifteen = inventors.filter((inventor) => {
+   //     //returns a new array based on if statement being true or not
+   //     if (inventor.year >= 1500 && inventor.year < 1600) {
+   //        return true; //keep it
+   //     }
+   //  })
+
+   //can also be written as
+   const fifteen = inventors.filter((inventor) => {
+      //returns a new array based on if statement being true or not
+      return inventor.year >= 1500 && inventor.year < 1600;
+      }
+   )
+
+    console.table(fifteen) //used to clean up data viewing
 
     // Array.prototype.map()
     // 2. Give us an array of the inventors' first and last names
+    const name = inventors.map((inventor) => {
+       //takes an array and return a new array based on the given which is the same length
+       return `${inventor.first} ${inventor.last}`;
+    })
+
+    console.table(name)
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
 
+   // const birthDate = inventors.sort((a, b) => {
+   //    // a is first person, b is second person
+   //    if (a.year > b.year) {
+   //       // 1 & -1 will just bump them up or down within the order
+   //       return 1;
+   //    } else {
+   //       return -1;
+   //    }
+   // })
+
+   //can also be written as a ternary operator below
+    const birthDate = inventors.sort((a,b) => {
+       return a.year > b.year ? 1 : -1;
+    })
+
+    console.table(birthDate)
+
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live?
+   //allows you to build based on every single item in the array
+
+   const totalYears = inventors.reduce((total, inventor) => {
+      //gives you a running total or what you have returned from last time "total"
+      return total + (inventor.passed - inventor.year);
+
+   }, 0);
+   //need to include a start value, in this case of 0 or else it wont be able to add and itll be undefined
+
+   console.log(totalYears);
+   
 
     // 5. Sort the inventors by years lived
 
+    const oldest = inventors.sort((a,b) => {
+       const firstGuy = a.passed - a.year;
+       const nextGuy = b.passed - b.year;
+      //we give the older guy -1 because we want the oldest to come first
+      return firstGuy > nextGuy ? -1 : 1;
+    })
+
+    console.table(oldest);
+
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
+
+   //  const category = document.querySelector(".mw-category");
+
+   //  const links = category.querySelectorAll("a");
+   // category.querySelectorAll("a") returns a node list, not an array
+
+   //  const links = [...category.querySelectorAll("a")];
+    //putting the square brackets and the spread operator will turn your inputs into array items
+    //you are using ES6 spread to spread everything into an array
+    // a spread will take every item out of something, an iterable, the node list, and put it into an array
+   
+   //easier method
+   // const links = Array.from(category.querySelectorAll("a"));
+    
+
+   //  const de = links
+   //                .map((link) => {
+   //                   return link.textContent;
+   //                })
+   //                .filter((streetName) => {
+   //                   return streetName.includes("de")
+   //                });
+    // this will initially cause an error as we are trying to use an array method on links which currently is not an array, it returns a node list
+    //therefor, we change links into an array
 
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
 
+    const alpha = people.sort((lastOne, nextOne) => {
+       // we use split to split the string with the comma and space that way we can only get the last name
+       // const parts = lastOne.split(", ")
+       // we also destructure that way it isn't two items in an array
+       const [ aLast, aFirst ] = lastOne.split(", ")
+       const [ bLast, bFirst ] = nextOne.split(", ")
+
+       //this return will sort based on alphabetical
+       return aLast > bLast ? 1 : -1;
+    })
+
+    console.log(alpha)
+
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+
+    const transportation = data.reduce((obj, item) => {
+       // if the item is not existing within the object, we create the property and assign value of 0
+       if (!obj[item]) {
+          obj[item] = 0;
+       }
+       obj[item]++;
+       return obj;
+    }, {})
+    //we leave it as a blank obj since we dont know what items they would be as opposed to jsut listing them
+
+    console.log(transportation)
 
   </script>
 </body>
